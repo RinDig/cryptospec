@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE PRESENCE CODEX</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=IM+Fell+DW+Pica+SC&family=Special+Elite&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap');
+
+:root {
+  --parchment: #1a1611;
+  --parchment-light: #2a2218;
+  --ink: #c4a872;
+  --ink-bright: #e8d5a8;
+  --ink-dim: #7a6a4a;
+  --blood: #8b2500;
+  --blood-bright: #c43e00;
+  --glow: #d4a03420;
+  --char: #0d0b09;
+  --green: #3a6b35;
+  --green-bright: #5a9b50;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-dim) var(--char);
+}
+
+body {
+  background: var(--char);
+  color: var(--ink);
+  font-family: 'IM Fell English', serif;
+  font-size: 17px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* --- GRAIN OVERLAY --- */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* --- NAVIGATION --- */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: linear-gradient(180deg, var(--char) 60%, transparent);
+  padding: 16px 0 32px;
+}
+
+.nav-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.nav-inner a {
+  color: var(--ink-dim);
+  text-decoration: none;
+  font-family: 'Special Elite', cursive;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid transparent;
+  transition: all 0.3s;
+}
+
+.nav-inner a:hover {
+  color: var(--ink-bright);
+  border-color: var(--ink-dim);
+}
+
+/* --- MAIN CONTAINER --- */
+.codex {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 100px 32px 80px;
+}
+
+/* --- TITLE PAGE --- */
+.title-page {
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  padding: 60px 0;
+}
+
+.sigil {
+  width: 120px;
+  height: 120px;
+  border: 2px solid var(--ink-dim);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40px;
+  position: relative;
+  animation: pulse-sigil 4s ease-in-out infinite;
+}
+
+.sigil::before {
+  content: '◉';
+  font-size: 48px;
+  color: var(--blood);
+}
+
+.sigil::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border: 1px solid var(--ink-dim);
+  border-radius: 50%;
+  opacity: 0.3;
+}
+
+@keyframes pulse-sigil {
+  0%, 100% { box-shadow: 0 0 20px var(--glow); }
+  50% { box-shadow: 0 0 40px var(--glow), 0 0 80px #d4a03410; }
+}
+
+.title-page h1 {
+  font-family: 'IM Fell DW Pica SC', serif;
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  color: var(--ink-bright);
+  letter-spacing: 6px;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.title-page .subtitle {
+  font-family: 'Special Elite', cursive;
+  font-size: 13px;
+  letter-spacing: 4px;
+  color: var(--blood-bright);
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+
+.title-page .epigraph {
+  font-style: italic;
+  color: var(--ink-dim);
+  max-width: 500px;
+  font-size: 15px;
+  line-height: 1.8;
+  border-left: 2px solid var(--blood);
+  padding-left: 20px;
+  text-align: left;
+  margin-bottom: 40px;
+}
+
+.scroll-hint {
+  font-family: 'Special Elite', cursive;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--ink-dim);
+  animation: bob 2s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+/* --- SECTION STYLING --- */
+.chapter {
+  margin-bottom: 80px;
+  padding-top: 60px;
+  position: relative;
+}
+
+.chapter-number {
+  font-family: 'IM Fell DW Pica SC', serif;
+  font-size: 11px;
+  letter-spacing: 6px;
+  color: var(--blood);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.chapter h2 {
+  font-family: 'IM Fell DW Pica SC', serif;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  color: var(--ink-bright);
+  letter-spacing: 3px;
+  margin-bottom: 24px;
+  line-height: 1.2;
+}
+
+.chapter h2::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 2px;
+  background: var(--blood);
+  margin-top: 12px;
+}
+
+.chapter p {
+  margin-bottom: 16px;
+  color: var(--ink);
+}
+
+.chapter strong {
+  color: var(--ink-bright);
+}
+
+/* --- ROUTE CARDS --- */
+.route-grid {
+  display: grid;
+  gap: 24px;
+  margin: 32px 0;
+}
+
+.route-card {
+  background: var(--parchment);
+  border: 1px solid var(--ink-dim);
+  border-left: 3px solid var(--blood);
+  padding: 28px 28px 24px;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.route-card:hover {
+  border-color: var(--ink);
+  background: var(--parchment-light);
+  transform: translateX(4px);
+}
+
+.route-card .route-label {
+  font-family: 'Special Elite', cursive;
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--blood-bright);
+  margin-bottom: 6px;
+}
+
+.route-card h3 {
+  font-family: 'IM Fell DW Pica SC', serif;
+  font-size: 1.3rem;
+  color: var(--ink-bright);
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.route-card p {
+  font-size: 15px;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+
+.route-card .tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.tag {
+  font-family: 'Courier Prime', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  padding: 3px 8px;
+  border: 1px solid var(--ink-dim);
+  color: var(--ink-dim);
+  text-transform: uppercase;
+}
+
+.tag.hot {
+  border-color: var(--blood);
+  color: var(--blood-bright);
+}
+
+.tag.green {
+  border-color: var(--green);
+  color: var(--green-bright);
+}
+
+/* --- TECH STACK TABLE --- */
+.stack-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  font-size: 14px;
+}
+
+.stack-table th {
+  font-family: 'Special Elite', cursive;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--blood-bright);
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 2px solid var(--ink-dim);
+}
+
+.stack-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #2a2218;
+  vertical-align: top;
+}
+
+.stack-table tr:hover td {
+  background: var(--parchment);
+}
+
+.stack-table .layer-name {
+  font-family: 'Courier Prime', monospace;
+  color: var(--ink-bright);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* --- THREAT MATRIX --- */
+.threat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+@media (max-width: 600px) {
+  .threat-grid { grid-template-columns: 1fr; }
+}
+
+.threat-card {
+  background: var(--parchment);
+  border: 1px solid var(--ink-dim);
+  padding: 20px;
+  position: relative;
+}
+
+.threat-card::before {
+  content: attr(data-severity);
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-family: 'Courier Prime', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.threat-card[data-severity="critical"]::before { color: var(--blood-bright); }
+.threat-card[data-severity="high"]::before { color: #c47a00; }
+.threat-card[data-severity="medium"]::before { color: var(--ink-dim); }
+
+.threat-card h4 {
+  font-family: 'Special Elite', cursive;
+  font-size: 14px;
+  color: var(--ink-bright);
+  margin-bottom: 6px;
+}
+
+.threat-card p {
+  font-size: 13px;
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+/* --- DIVIDER --- */
+.divider {
+  text-align: center;
+  padding: 40px 0;
+  color: var(--ink-dim);
+  font-size: 18px;
+  letter-spacing: 12px;
+}
+
+/* --- VERDICT BOX --- */
+.verdict {
+  background: linear-gradient(135deg, var(--parchment) 0%, #1e1a14 100%);
+  border: 2px solid var(--blood);
+  padding: 36px 32px;
+  margin: 32px 0;
+  position: relative;
+}
+
+.verdict::before {
+  content: 'VERDICT';
+  font-family: 'Special Elite', cursive;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--blood-bright);
+  position: absolute;
+  top: -8px;
+  left: 24px;
+  background: var(--parchment);
+  padding: 0 8px;
+}
+
+.verdict p {
+  font-size: 16px;
+  color: var(--ink-bright);
+  line-height: 1.8;
+}
+
+/* --- CODE/MONO BLOCKS --- */
+.mono-block {
+  font-family: 'Courier Prime', monospace;
+  font-size: 13px;
+  background: var(--char);
+  border: 1px solid var(--ink-dim);
+  padding: 20px 24px;
+  margin: 20px 0;
+  overflow-x: auto;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+.mono-block .comment { color: var(--ink-dim); }
+.mono-block .highlight { color: var(--blood-bright); }
+.mono-block .green { color: var(--green-bright); }
+
+/* --- COMPARISON METER --- */
+.meter-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0;
+  font-size: 13px;
+}
+
+.meter-label {
+  font-family: 'Courier Prime', monospace;
+  width: 140px;
+  flex-shrink: 0;
+  text-align: right;
+  font-size: 11px;
+  color: var(--ink);
+}
+
+.meter-bar {
+  flex: 1;
+  height: 6px;
+  background: var(--parchment);
+  border-radius: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.meter-fill {
+  height: 100%;
+  transition: width 1s ease-out;
+}
+
+.meter-fill.red { background: var(--blood); }
+.meter-fill.gold { background: var(--ink); }
+.meter-fill.green { background: var(--green); }
+
+.meter-val {
+  font-family: 'Courier Prime', monospace;
+  font-size: 11px;
+  color: var(--ink-dim);
+  width: 40px;
+}
+
+/* --- TIMELINE --- */
+.timeline {
+  position: relative;
+  padding-left: 32px;
+  margin: 24px 0;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--ink-dim);
+}
+
+.timeline-item {
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -28px;
+  top: 6px;
+  width: 8px;
+  height: 8px;
+  background: var(--blood);
+  border-radius: 50%;
+}
+
+.timeline-item .t-date {
+  font-family: 'Courier Prime', monospace;
+  font-size: 11px;
+  color: var(--blood-bright);
+  letter-spacing: 1px;
+}
+
+.timeline-item .t-title {
+  font-family: 'IM Fell DW Pica SC', serif;
+  font-size: 15px;
+  color: var(--ink-bright);
+  margin: 2px 0 4px;
+}
+
+.timeline-item .t-desc {
+  font-size: 13px;
+  color: var(--ink);
+}
+
+/* --- FOOTNOTE --- */
+.footnote {
+  font-size: 12px;
+  color: var(--ink-dim);
+  border-top: 1px solid #2a2218;
+  padding-top: 12px;
+  margin-top: 24px;
+  font-style: italic;
+}
+
+/* --- COLOPHON --- */
+.colophon {
+  text-align: center;
+  padding: 60px 0 40px;
+  color: var(--ink-dim);
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.colophon .mark {
+  font-size: 28px;
+  margin-bottom: 12px;
+  color: var(--blood);
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 600px) {
+  .codex { padding: 80px 18px 60px; }
+  .route-card { padding: 20px; }
+  .verdict { padding: 28px 20px; }
+  .meter-label { width: 100px; font-size: 10px; }
+}
+
+/* --- ANIMATIONS --- */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.chapter:nth-child(2) { animation-delay: 0.1s; }
+.chapter:nth-child(3) { animation-delay: 0.2s; }
+
+/* --- PULL QUOTE --- */
+.pull-quote {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--ink-bright);
+  border-left: 3px solid var(--blood);
+  padding: 16px 0 16px 24px;
+  margin: 28px 0;
+  line-height: 1.6;
+}
+
+/* --- LINK STYLING --- */
+a {
+  color: var(--blood-bright);
+  text-decoration: none;
+  border-bottom: 1px solid var(--blood);
+  transition: all 0.2s;
+}
+
+a:hover {
+  color: var(--ink-bright);
+  border-color: var(--ink);
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#thesis">Thesis</a>
+    <a href="#terrain">Terrain</a>
+    <a href="#routes">Routes</a>
+    <a href="#threats">Threats</a>
+    <a href="#stack">Stack</a>
+    <a href="#market">Market</a>
+    <a href="#build">Build</a>
+  </div>
+</nav>
+
+<div class="codex">
+
+  <!-- ═══════════════════════════════ TITLE PAGE ═══════════════════════════════ -->
+  <section class="title-page">
+    <div class="sigil"></div>
+    <h1>THE PRESENCE<br>CODEX</h1>
+    <div class="subtitle">A Field Manual for Cryptographic Proof-of-Presence Messaging</div>
+    <div class="epigraph">
+      "You cannot enter the agora unless you stand in the agora. No proxies. No delegates. No ghosts. Your body is your credential, your photograph is your oath, and the room only opens for those who showed up."
+    </div>
+    <div class="scroll-hint">↓ DESCEND INTO THE RABBIT HOLE ↓</div>
+  </section>
+
+  <!-- ═══════════════════════════════ I. THE THESIS ═══════════════════════════════ -->
+  <section class="chapter fade-in" id="thesis">
+    <div class="chapter-number">Chapter I</div>
+    <h2>The Thesis</h2>
+
+    <p>Here is the idea, stripped bare: <strong>A messaging platform where physical presence is the private key.</strong> You walk to a place. You take a photograph. The system verifies you are actually there, not some ghost feeding it spoofed GPS coordinates from a basement in Moldova. Once verified, you are granted entry into a cryptographically sealed group chat bound to that location and moment in time.</p>
+
+    <p>This is not a feature request. This is a philosophical position. In an era where digital identity is infinitely replicable, where deepfakes pass as testimony and bots outnumber humans in comment sections, this app says: <strong>the only credential that matters is your physical body occupying physical space.</strong></p>
+
+    <p>The ancient Greeks had a word for it. <em>Parrhesia</em>&mdash;the courage to speak truth in the public square. But you had to <em>be</em> in the square. You could not send a scroll. You showed up or you did not speak. This app is parrhesia for the digital age.</p>
+
+    <div class="verdict">
+      <p>The core technical challenge is a three-body problem: prove the <strong>person</strong> is real, prove the <strong>place</strong> is real, prove the <strong>photo</strong> is real&mdash;then encrypt everything that follows. Each of these has an entire industry trying to solve it. The opportunity is in the fusion.</p>
+    </div>
+  </section>
+
+  <div class="divider">⬥ ⬥ ⬥</div>
+
+  <!-- ═══════════════════════════════ II. THE TERRAIN ═══════════════════════════════ -->
+  <section class="chapter fade-in" id="terrain">
+    <div class="chapter-number">Chapter II</div>
+    <h2>The Terrain: What Already Exists</h2>
+
+    <p>This is not virgin territory. Multiple civilizations have attempted to solve pieces of this puzzle. None have fused them into a single, coherent product. Here is what is out there, mapped and measured.</p>
+
+    <h3 style="font-family: 'IM Fell DW Pica SC', serif; font-size: 1.1rem; color: var(--ink-bright); margin: 28px 0 16px;">Proof-of-Location Protocols</h3>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="t-date">2018 — ACTIVE</div>
+        <div class="t-title">FOAM Protocol (Ethereum)</div>
+        <div class="t-desc">Open protocol for decentralized, geospatial data on blockchain. Uses radio beacons (LoRa) for Byzantine fault-tolerant location verification. Token-curated registries for points of interest. Dynamic Proof of Location via Zone Anchors that triangulate and verify position. The closest thing to a "GPS replacement" on-chain. Still active but infrastructure-heavy.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="t-date">2024 — ACADEMIC</div>
+        <div class="t-title">zk-PoL (Zero-Knowledge Proof of Location)</div>
+        <div class="t-desc">Combines blockchain with zero-knowledge proofs so users can prove they were at a location without revealing exact coordinates. Uses smart access points (APs) to issue location certificates. Hierarchical privacy protection. Published at arXiv. The privacy angle is critical for your app.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="t-date">2025 — PUBLISHED</div>
+        <div class="t-title">Decentralized PoL Systems (Nature Scientific Reports)</div>
+        <div class="t-desc">Formalizes composable architecture for decentralized Proof-of-Location using fault-tolerant witnessing zones. Distance bounding protocols, distributed digital signatures, consensus mechanisms. The most rigorous academic treatment to date. Provides the theoretical backbone.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="t-date">2021 — GROWING</div>
+        <div class="t-title">POLP (Proof of Location Protocol)</div>
+        <div class="t-desc">First ZK-powered solution for verifiable location privacy. Uses snarkjs for cryptographic proof circuits. Multi-source sensing: GPS + Wi-Fi + Bluetooth + cell tower triangulation. Trusted Execution Environments (TEE) for hardware-level isolation. Open source on GitHub.</div>
+      </div>
+    </div>
+
+    <h3 style="font-family: 'IM Fell DW Pica SC', serif; font-size: 1.1rem; color: var(--ink-bright); margin: 28px 0 16px;">Photo Verification &amp; Anti-Spoofing</h3>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="t-date">2021 — STANDARD</div>
+        <div class="t-title">C2PA Content Credentials</div>
+        <div class="t-desc">Coalition of Adobe, Microsoft, BBC, Google, OpenAI, Meta, Amazon, Intel, Sony. Open standard for cryptographically binding provenance data to digital assets. A C2PA-enabled camera creates a manifest with X.509 certificate signatures, cryptographic hashes, device info, and GPS coordinates. Expected ISO international standard. <strong>This is the most production-ready photo authenticity infrastructure on the planet.</strong></div>
+      </div>
+      <div class="timeline-item">
+        <div class="t-date">2023 — MATURING</div>
+        <div class="t-title">Visual Place Recognition (VPR)</div>
+        <div class="t-desc">CNN-based systems that identify locations from images alone, no GPS required. OpenCV pipelines using global descriptors + cosine similarity + geometric verification. Can verify "this photo was taken at this place" with meter-level accuracy. Used in autonomous vehicles, SLAM robotics. 200+ academic papers. The tech exists. Nobody has put it in a messaging app.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="t-date">2024-25 — ARMS RACE</div>
+        <div class="t-title">Deepfake &amp; Anti-Spoofing Detection</div>
+        <div class="t-desc">Liveness detection (passive and active). EXIF forensics. FFT frequency analysis. Error Level Analysis. Neural network-based detection achieving 95-97% accuracy. Companies: Reality Defender, BioID, Sumsub, TruthScan. Key insight: EXIF metadata can be stripped or faked. You need layered verification.</div>
+      </div>
+    </div>
+
+    <h3 style="font-family: 'IM Fell DW Pica SC', serif; font-size: 1.1rem; color: var(--ink-bright); margin: 28px 0 16px;">Encrypted Group Messaging</h3>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="t-date">2023 — IETF STANDARD</div>
+        <div class="t-title">MLS (Messaging Layer Security) — RFC 9420</div>
+        <div class="t-desc"><strong>This is the one.</strong> IETF standard for end-to-end encrypted group messaging. Scales from 2 to 50,000+ participants using ratchet tree structures. Forward secrecy + post-compromise security. Adopted by Wire, Google Messages (RCS), Cisco, RingCentral. Co-developed by Mozilla, Cisco, Meta, Oxford. Architecture RFC 9750 published April 2025. This is the encryption layer your app should be built on.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="t-date">2025 — EMERGING</div>
+        <div class="t-title">Germ DM (ATProto / Bluesky)</div>
+        <div class="t-desc">First E2E encrypted messenger natively integrated into Bluesky. Uses MLS + AT Protocol. Founded by ex-Apple privacy engineer and Stanford communications scholar. No phone number required. Proof that MLS-based messaging on decentralized social protocols is shipping now.</div>
+      </div>
+    </div>
+
+    <div class="footnote">Sources: Nature Scientific Reports (June 2025), IETF RFC 9420/9750, C2PA Specification v2.2/2.3, OpenCV VPR Blog (Jan 2026), POLP GitHub, FOAM Whitepaper, TechCrunch (Feb 2026).</div>
+  </section>
+
+  <div class="divider">⬥ ⬥ ⬥</div>
+
+  <!-- ═══════════════════════════════ III. THE ROUTES ═══════════════════════════════ -->
+  <section class="chapter fade-in" id="routes">
+    <div class="chapter-number">Chapter III</div>
+    <h2>The Routes: Five Architectures</h2>
+
+    <p>There is no single correct way to build this. Each path trades complexity for trust, decentralization for speed, privacy for verification strength. Here are five architectures, ranked from most pragmatic to most ideologically pure.</p>
+
+    <div class="route-grid">
+
+      <div class="route-card">
+        <div class="route-label">Route Alpha</div>
+        <h3>The Pragmatist: C2PA + MLS + GPS Fence</h3>
+        <p>Use C2PA Content Credentials to verify photo authenticity at the hardware level. Layer GPS geofencing to confirm the device is within the target zone. Pipe verified users into an MLS-encrypted group chat. The photo's cryptographic manifest proves the camera took a real photo, the GPS proves where, and MLS encrypts everything after.</p>
+        <p><strong>Strength:</strong> Uses production-ready standards. C2PA is backed by every major tech company. MLS is an IETF standard. You could build an MVP in weeks.</p>
+        <p><strong>Weakness:</strong> GPS is spoofable. C2PA requires hardware support (newer iPhones and Pixels). Centralized trust anchors (C2PA Trust List).</p>
+        <div class="tag-row">
+          <span class="tag green">MVP-READY</span>
+          <span class="tag">C2PA</span>
+          <span class="tag">MLS</span>
+          <span class="tag">GPS</span>
+          <span class="tag hot">CENTRALIZED TRUST</span>
+        </div>
+      </div>
+
+      <div class="route-card">
+        <div class="route-label">Route Beta</div>
+        <h3>The Hybrid: VPR + Multi-Signal + MLS</h3>
+        <p>Use Visual Place Recognition to verify the photo matches the target location visually. Layer in Wi-Fi fingerprinting, Bluetooth beacon detection, cell tower triangulation, and barometric pressure (altitude). If 3 of 5 signals agree, the user is admitted. MLS handles the encryption.</p>
+        <p><strong>Strength:</strong> GPS-independent. Much harder to spoof because you need to fake multiple independent signals simultaneously. VPR adds a layer that is nearly impossible to game without physically being there.</p>
+        <p><strong>Weakness:</strong> VPR requires a pre-built reference database for each location. Multi-signal fusion is computationally expensive on mobile. False positive/negative rates need tuning.</p>
+        <div class="tag-row">
+          <span class="tag green">GPS-INDEPENDENT</span>
+          <span class="tag">VPR</span>
+          <span class="tag">MULTI-SIGNAL</span>
+          <span class="tag">MLS</span>
+          <span class="tag hot">DB REQUIRED</span>
+        </div>
+      </div>
+
+      <div class="route-card">
+        <div class="route-label">Route Gamma</div>
+        <h3>The Peer Witness: Byzantine Attestation Network</h3>
+        <p>Steal from FOAM's playbook. Other users already in the chat serve as "witnesses." When a new user wants to join, nearby verified users cryptographically co-sign the newcomer's location claim. Byzantine fault tolerance means you need 2/3+ of witnesses to agree. No central server decides who is "present."</p>
+        <p><strong>Strength:</strong> Fully decentralized verification. No trusted third party. Scales organically as groups grow. Mirrors ancient tribal vouching systems.</p>
+        <p><strong>Weakness:</strong> Chicken-and-egg: who verifies the first user? Collusion attacks (friends co-signing fraudulent claims). Requires minimum group density to function.</p>
+        <div class="tag-row">
+          <span class="tag green">DECENTRALIZED</span>
+          <span class="tag">BFT</span>
+          <span class="tag">PEER WITNESS</span>
+          <span class="tag hot">COLD START</span>
+          <span class="tag hot">COLLUSION RISK</span>
+        </div>
+      </div>
+
+      <div class="route-card">
+        <div class="route-label">Route Delta</div>
+        <h3>The Zero-Knowledge Path: zk-PoL + E2EE</h3>
+        <p>Use zero-knowledge proofs so users can prove "I am within this geographic zone" without revealing their exact coordinates. Smart access points or BLE beacons issue location certificates. The ZK proof is verified on-chain or by a lightweight verifier. Chat is E2E encrypted with MLS.</p>
+        <p><strong>Strength:</strong> Maximum privacy. The system never knows your exact location, only that you satisfy the geometric constraint. Mathematically rigorous. Post-quantum secure if using zk-STARKs.</p>
+        <p><strong>Weakness:</strong> ZK proof generation is computationally intensive on mobile (1-3 seconds). Requires trusted setup or infrastructure (access points/beacons). Exotic technology, smaller talent pool for hiring.</p>
+        <div class="tag-row">
+          <span class="tag green">MAX PRIVACY</span>
+          <span class="tag">ZK-PROOFS</span>
+          <span class="tag">POST-QUANTUM</span>
+          <span class="tag hot">COMPUTE HEAVY</span>
+          <span class="tag hot">INFRA NEEDED</span>
+        </div>
+      </div>
+
+      <div class="route-card">
+        <div class="route-label">Route Epsilon</div>
+        <h3>The Sovereign Stack: Full Decentralized Mesh</h3>
+        <p>No servers at all. Devices form a local mesh network (BLE/Wi-Fi Direct). Photo verification happens peer-to-peer using on-device ML. Presence is attested by signal strength between devices (you are physically near me, I can prove it by the radio propagation model). Messages are encrypted and relayed hop-to-hop. Works offline.</p>
+        <p><strong>Strength:</strong> Works without internet. No servers to subpoena. No metadata leakage. The chat literally cannot exist unless people are physically proximate. Protest-grade infrastructure.</p>
+        <p><strong>Weakness:</strong> Range limited (~100m BLE, ~200m Wi-Fi Direct). No persistence (chat dies when people leave). On-device ML verification is limited. Battery drain.</p>
+        <div class="tag-row">
+          <span class="tag green">SERVERLESS</span>
+          <span class="tag green">OFFLINE</span>
+          <span class="tag">MESH</span>
+          <span class="tag">PEER-TO-PEER</span>
+          <span class="tag hot">RANGE LIMITED</span>
+          <span class="tag hot">EPHEMERAL</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="pull-quote">
+      "The question is not which route is best. The question is: what kind of trust are you selling? Trust in institutions, trust in math, trust in witnesses, or trust in physics?"
+    </div>
+  </section>
+
+  <div class="divider">⬥ ⬥ ⬥</div>
+
+  <!-- ═══════════════════════════════ IV. THREAT MODEL ═══════════════════════════════ -->
+  <section class="chapter fade-in" id="threats">
+    <div class="chapter-number">Chapter IV</div>
+    <h2>The Threats: What Will Break This</h2>
+
+    <p>Every system has adversaries. If you are building a presence-gated communication platform, these are the attacks you must survive.</p>
+
+    <div class="threat-grid">
+      <div class="threat-card" data-severity="critical">
+        <h4>GPS Spoofing</h4>
+        <p>Consumer-grade GPS spoofers cost $30 on Amazon. Android allows mock locations natively for developers. Any architecture relying solely on GPS is already broken.</p>
+      </div>
+      <div class="threat-card" data-severity="critical">
+        <h4>Photo Injection / Deepfake</h4>
+        <p>Virtual cameras can inject pre-recorded or AI-generated footage into any app's camera pipeline. Camera API hooking on rooted/jailbroken devices bypasses liveness detection. The arms race is real: detection accuracy is 95-97% but adversarial attacks evolve monthly.</p>
+      </div>
+      <div class="threat-card" data-severity="high">
+        <h4>EXIF Manipulation</h4>
+        <p>EXIF metadata (GPS coordinates, timestamps, device info) can be edited with tools like ExifTool in seconds. Most social platforms strip EXIF on upload. Metadata is a clue, never proof.</p>
+      </div>
+      <div class="threat-card" data-severity="high">
+        <h4>Relay Attacks</h4>
+        <p>Alice is at the location. Bob is remote. Bob relays verification challenges to Alice in real-time, Alice responds, Bob gets in. Distance bounding protocols mitigate this but add latency.</p>
+      </div>
+      <div class="threat-card" data-severity="high">
+        <h4>Collusion / Sybil Attacks</h4>
+        <p>In peer-witness systems, multiple fake identities can vouch for each other. Mitigations: stake-based identity (economic cost to create accounts), rate limiting, reputation decay.</p>
+      </div>
+      <div class="threat-card" data-severity="medium">
+        <h4>Time-of-Check vs. Time-of-Use</h4>
+        <p>User verifies presence, then physically leaves while maintaining the chat session. How long does the "presence credential" remain valid? 5 minutes? 1 hour? Continuous re-verification kills UX.</p>
+      </div>
+    </div>
+
+    <div class="verdict">
+      <p><strong>The fundamental law:</strong> No single verification signal is trustworthy in isolation. GPS lies. Photos lie. Metadata lies. The only defense is <em>signal fusion</em>&mdash;requiring multiple independent signals to agree, making the cost of spoofing prohibitively high.</p>
+    </div>
+  </section>
+
+  <div class="divider">⬥ ⬥ ⬥</div>
+
+  <!-- ═══════════════════════════════ V. THE STACK ═══════════════════════════════ -->
+  <section class="chapter fade-in" id="stack">
+    <div class="chapter-number">Chapter V</div>
+    <h2>The Stack: Computational Layers</h2>
+
+    <p>Using the computational orchestration framework: what belongs in AI, what belongs in traditional code, what belongs in cryptography, and what belongs in human judgment.</p>
+
+    <table class="stack-table">
+      <tr>
+        <th>Layer</th>
+        <th>Function</th>
+        <th>Technology</th>
+        <th>Readiness</th>
+      </tr>
+      <tr>
+        <td class="layer-name">CRYPTO</td>
+        <td>Group key agreement, forward secrecy, post-compromise security</td>
+        <td>MLS (RFC 9420), TreeKEM ratchet trees</td>
+        <td style="color: var(--green-bright);">Production</td>
+      </tr>
+      <tr>
+        <td class="layer-name">CRYPTO</td>
+        <td>Photo provenance &amp; integrity</td>
+        <td>C2PA Content Credentials, X.509 signatures</td>
+        <td style="color: var(--green-bright);">Production</td>
+      </tr>
+      <tr>
+        <td class="layer-name">CRYPTO</td>
+        <td>Location proof (privacy-preserving)</td>
+        <td>zk-SNARKs / zk-STARKs, distance bounding</td>
+        <td style="color: #c47a00;">Research</td>
+      </tr>
+      <tr>
+        <td class="layer-name">AI/ML</td>
+        <td>Visual Place Recognition</td>
+        <td>CNN global descriptors, NetVLAD, cosine similarity</td>
+        <td style="color: #c47a00;">Prototype</td>
+      </tr>
+      <tr>
+        <td class="layer-name">AI/ML</td>
+        <td>Liveness detection &amp; deepfake rejection</td>
+        <td>Passive liveness, neural anti-spoofing, texture analysis</td>
+        <td style="color: var(--green-bright);">Production</td>
+      </tr>
+      <tr>
+        <td class="layer-name">TRAD CODE</td>
+        <td>GPS geofencing</td>
+        <td>CoreLocation / Android Location API</td>
+        <td style="color: var(--green-bright);">Production</td>
+      </tr>
+      <tr>
+        <td class="layer-name">TRAD CODE</td>
+        <td>Wi-Fi / BLE fingerprinting</td>
+        <td>Signal strength triangulation, beacon scanning</td>
+        <td style="color: var(--green-bright);">Production</td>
+      </tr>
+      <tr>
+        <td class="layer-name">TRAD CODE</td>
+        <td>Multi-signal fusion &amp; confidence scoring</td>
+        <td>Weighted ensemble, threshold logic</td>
+        <td style="color: #c47a00;">Build Custom</td>
+      </tr>
+      <tr>
+        <td class="layer-name">HUMAN</td>
+        <td>Trust policy (credential TTL, re-verification interval)</td>
+        <td>Product design decisions</td>
+        <td style="color: var(--ink);">Design</td>
+      </tr>
+      <tr>
+        <td class="layer-name">HUMAN</td>
+        <td>Abuse moderation, edge case adjudication</td>
+        <td>Community governance, reporting tools</td>
+        <td style="color: var(--ink);">Design</td>
+      </tr>
+    </table>
+
+    <div class="pull-quote">
+      "The 60/30/10 rule applies here too. Sixty percent of this app is traditional database and API work. Thirty percent is cryptographic protocol integration. Ten percent is the AI/ML verification layer. The magic is in the orchestration, not in any single component."
+    </div>
+
+    <h3 style="font-family: 'IM Fell DW Pica SC', serif; font-size: 1.1rem; color: var(--ink-bright); margin: 28px 0 16px;">Verification Confidence Model</h3>
+
+    <p>Each signal contributes a confidence score. The system admits users when the fused score exceeds a threshold.</p>
+
+    <div style="margin: 24px 0;">
+      <div class="meter-row">
+        <div class="meter-label">C2PA Manifest</div>
+        <div class="meter-bar"><div class="meter-fill green" style="width: 85%;"></div></div>
+        <div class="meter-val">0.85</div>
+      </div>
+      <div class="meter-row">
+        <div class="meter-label">GPS Geofence</div>
+        <div class="meter-bar"><div class="meter-fill gold" style="width: 60%;"></div></div>
+        <div class="meter-val">0.60</div>
+      </div>
+      <div class="meter-row">
+        <div class="meter-label">Wi-Fi Fingerprint</div>
+        <div class="meter-bar"><div class="meter-fill gold" style="width: 70%;"></div></div>
+        <div class="meter-val">0.70</div>
+      </div>
+      <div class="meter-row">
+        <div class="meter-label">VPR Match</div>
+        <div class="meter-bar"><div class="meter-fill green" style="width: 80%;"></div></div>
+        <div class="meter-val">0.80</div>
+      </div>
+      <div class="meter-row">
+        <div class="meter-label">Liveness Check</div>
+        <div class="meter-bar"><div class="meter-fill green" style="width: 92%;"></div></div>
+        <div class="meter-val">0.92</div>
+      </div>
+      <div class="meter-row">
+        <div class="meter-label">BLE Proximity</div>
+        <div class="meter-bar"><div class="meter-fill gold" style="width: 65%;"></div></div>
+        <div class="meter-val">0.65</div>
+      </div>
+      <div class="meter-row">
+        <div class="meter-label">Peer Witness</div>
+        <div class="meter-bar"><div class="meter-fill red" style="width: 50%;"></div></div>
+        <div class="meter-val">0.50</div>
+      </div>
+    </div>
+
+    <div class="mono-block">
+      <span class="comment">// Presence verification fusion — conceptual</span><br><br>
+      <span class="highlight">signal_weights</span> = {<br>
+      &nbsp;&nbsp;c2pa_manifest: &nbsp;&nbsp;&nbsp;0.25, <span class="comment">// hardware-attested photo provenance</span><br>
+      &nbsp;&nbsp;gps_geofence: &nbsp;&nbsp;&nbsp;&nbsp;0.15, <span class="comment">// spoofable but cheap to check</span><br>
+      &nbsp;&nbsp;wifi_fingerprint: &nbsp;0.15, <span class="comment">// hard to fake remotely</span><br>
+      &nbsp;&nbsp;vpr_match: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.20, <span class="comment">// "does this photo look like this place?"</span><br>
+      &nbsp;&nbsp;liveness_check: &nbsp;&nbsp;0.15, <span class="comment">// is a real human holding a real camera?</span><br>
+      &nbsp;&nbsp;ble_proximity: &nbsp;&nbsp;&nbsp;0.10, <span class="comment">// are other verified users nearby?</span><br>
+      }<br><br>
+      <span class="highlight">threshold</span> = <span class="green">0.72</span> <span class="comment">// minimum fused confidence to admit</span><br><br>
+      <span class="comment">// If fused_score >= threshold → issue presence credential</span><br>
+      <span class="comment">// Credential TTL: configurable (5min to 24hr)</span><br>
+      <span class="comment">// Re-verification: passive (background signals) or active (new photo)</span>
+    </div>
+  </section>
+
+  <div class="divider">⬥ ⬥ ⬥</div>
+
+  <!-- ═══════════════════════════════ VI. MARKET ═══════════════════════════════ -->
+  <section class="chapter fade-in" id="market">
+    <div class="chapter-number">Chapter VI</div>
+    <h2>The Market: Who Cares About This</h2>
+
+    <p>The mistake most founders make: building technology and then looking for a market. Here is who is already spending money on adjacent problems.</p>
+
+    <div class="route-grid">
+      <div class="route-card">
+        <div class="route-label">Vertical I</div>
+        <h3>Protest &amp; Dissident Communication</h3>
+        <p>Hong Kong 2019 used Bridgefy (mesh messaging) until it was compromised. Iran, Myanmar, Belarus all saw internet shutdowns during protests. A presence-gated, offline-capable, encrypted mesh chat is a tool for democratic resistance. The market is not money. The market is <em>freedom.</em></p>
+        <div class="tag-row">
+          <span class="tag">MESH</span>
+          <span class="tag">OFFLINE</span>
+          <span class="tag green">HIGH IMPACT</span>
+        </div>
+      </div>
+
+      <div class="route-card">
+        <div class="route-label">Vertical II</div>
+        <h3>Events &amp; Conferences</h3>
+        <p>You are at SXSW. You take a photo of the venue. You are now in the SXSW backchannel. Not the official Slack. Not the Twitter hashtag. The actual room's living group chat, verified attendees only. Event organizers pay for this. Attendees want this. Sponsors want the verified audience data.</p>
+        <div class="tag-row">
+          <span class="tag green">REVENUE</span>
+          <span class="tag">B2B</span>
+          <span class="tag">EVENTS</span>
+        </div>
+      </div>
+
+      <div class="route-card">
+        <div class="route-label">Vertical III</div>
+        <h3>Military &amp; Intelligence</h3>
+        <p>Secure, presence-verified tactical communication. "Only personnel physically inside the TOC can access this channel." DoD spends billions on COMSEC. Veteran-owned companies with clearance pipelines could position for SBIR/STTR contracts. The presence-as-credential model maps directly to SCIF access control.</p>
+        <div class="tag-row">
+          <span class="tag green">HIGH VALUE</span>
+          <span class="tag">DEFENSE</span>
+          <span class="tag">SBIR</span>
+          <span class="tag hot">LONG CYCLE</span>
+        </div>
+      </div>
+
+      <div class="route-card">
+        <div class="route-label">Vertical IV</div>
+        <h3>Supply Chain &amp; Compliance</h3>
+        <p>Prove that an inspector was physically at the mine, the factory, the warehouse. Photo + location + timestamp, cryptographically bound. The VigilOre model, but for real-time communication between verified on-site personnel.</p>
+        <div class="tag-row">
+          <span class="tag green">REVENUE</span>
+          <span class="tag">COMPLIANCE</span>
+          <span class="tag">ENTERPRISE</span>
+        </div>
+      </div>
+
+      <div class="route-card">
+        <div class="route-label">Vertical V</div>
+        <h3>Local Community &amp; Neighborhood</h3>
+        <p>Nextdoor without the anonymous trolls. You can only post if you live here. You can only be in the neighborhood chat if your phone has been physically present in the neighborhood for N days. Presence over time as identity. Community trust through verified proximity.</p>
+        <div class="tag-row">
+          <span class="tag">CONSUMER</span>
+          <span class="tag">COMMUNITY</span>
+          <span class="tag hot">GROWTH CHALLENGE</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">⬥ ⬥ ⬥</div>
+
+  <!-- ═══════════════════════════════ VII. BUILD PLAN ═══════════════════════════════ -->
+  <section class="chapter fade-in" id="build">
+    <div class="chapter-number">Chapter VII</div>
+    <h2>The Build: What To Do First</h2>
+
+    <p>Do not build the whole thing. Build the smallest possible thing that proves the riskiest assumption. The riskiest assumption is: <strong>"Can we reliably verify physical presence from a photo on a consumer smartphone in under 3 seconds?"</strong></p>
+
+    <h3 style="font-family: 'IM Fell DW Pica SC', serif; font-size: 1.1rem; color: var(--ink-bright); margin: 24px 0 16px;">Phase 0: Proof of Concept (2-4 weeks)</h3>
+    <p>Build a single-page app. User takes a photo. Backend checks: (1) EXIF GPS vs. target coordinates, (2) basic liveness (front camera selfie requirement), (3) timestamp freshness. If pass, user gets a token. Token grants WebSocket access to an encrypted chat room. Use Signal Protocol or Matrix for the messaging layer. Total cost: $0-500 in hosting.</p>
+
+    <h3 style="font-family: 'IM Fell DW Pica SC', serif; font-size: 1.1rem; color: var(--ink-bright); margin: 24px 0 16px;">Phase 1: Hardened MVP (2-3 months)</h3>
+    <p>Add C2PA Content Credential verification (use the open-source c2pa-node library). Integrate passive liveness detection API (Sumsub or BioID). Add Wi-Fi SSID fingerprinting as a second signal. Implement MLS for group chat encryption (use OpenMLS Rust library with WASM bridge). Presence credential with configurable TTL.</p>
+
+    <h3 style="font-family: 'IM Fell DW Pica SC', serif; font-size: 1.1rem; color: var(--ink-bright); margin: 24px 0 16px;">Phase 2: Advanced Verification (3-6 months)</h3>
+    <p>Build or license a Visual Place Recognition model. Train on target locations. Add BLE beacon detection. Implement the multi-signal fusion engine with weighted confidence scoring. Consider ZK location proofs for privacy-sensitive deployments.</p>
+
+    <h3 style="font-family: 'IM Fell DW Pica SC', serif; font-size: 1.1rem; color: var(--ink-bright); margin: 24px 0 16px;">Phase 3: Decentralized Architecture (6-12 months)</h3>
+    <p>Explore peer witness attestation. Build mesh networking capability for offline operation. Consider on-chain presence credentials for audit trails. This is where it gets philosophically interesting and technically treacherous.</p>
+
+    <div class="mono-block">
+      <span class="comment">// Key open-source libraries to evaluate</span><br><br>
+      <span class="green">Messaging:</span>&nbsp;&nbsp;&nbsp;OpenMLS (Rust), mls-rs (Rust), go-mls (Go)<br>
+      <span class="green">Photo Auth:</span>&nbsp;&nbsp;c2pa-node, c2pa-rs, Content Authenticity SDK<br>
+      <span class="green">Liveness:</span>&nbsp;&nbsp;&nbsp;&nbsp;deepface-antispoofing (Python), BioID API<br>
+      <span class="green">VPR:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OpenCV VPR pipeline, NetVLAD, MixVPR<br>
+      <span class="green">ZK Proofs:</span>&nbsp;&nbsp;&nbsp;snarkjs, ZoKrates, Circom<br>
+      <span class="green">Mesh:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;libp2p, MultipeerConnectivity (iOS)<br>
+      <span class="green">Protocol:</span>&nbsp;&nbsp;&nbsp;&nbsp;AT Protocol (Bluesky), Matrix, XMPP<br>
+    </div>
+
+    <div class="verdict">
+      <p>Start with Route Alpha. It is the fastest path to a working prototype. But <strong>design the architecture</strong> so you can swap in Route Beta or Delta components as they mature. The C2PA + MLS foundation is solid bedrock. Everything else is modular hardening. Build the cathedral, but build it so the walls can be replaced while the roof stays up.</p>
+    </div>
+
+    <div class="pull-quote">
+      "The old anarchists had a saying: 'The propaganda of the deed.' Do not write a manifesto about presence-verified communication. Build the thing. Let the thing be the argument."
+    </div>
+  </section>
+
+  <div class="divider">◆ ◆ ◆ ◆ ◆</div>
+
+  <!-- ═══════════════════════════════ COLOPHON ═══════════════════════════════ -->
+  <div class="colophon">
+    <div class="mark">◉</div>
+    THE PRESENCE CODEX<br>
+    <span style="font-family: 'Special Elite', cursive;">Compiled February 2026</span><br><br>
+    <span style="color: var(--ink-dim); font-size: 10px; letter-spacing: 3px;">
+      "YOUR BODY IS YOUR CREDENTIAL"
+    </span>
+  </div>
+
+</div>
+
+</body>
+</html>
